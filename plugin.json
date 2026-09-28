@@ -1,0 +1,21 @@
+{
+    "name": "TwGewaehrleistung",
+    "namespace": "TwGewaehrleistung",
+    "type": "template",
+    "version": "1.0.0",
+    "description": "Harmonisierter EU-Gewaehrleistungshinweis (DVO 2025/1960) fuer den Telliswelt-Shop: Link + Hinweis auf der Artikelseite, Link in der Kasse, Footer-Link, Hinweis-Overlay.",
+    "author": "Telliswelt",
+    "keywords": [
+        "Gewaehrleistung",
+        "EmpCo",
+        "Ceres"
+    ],
+    "serviceProvider": "TwGewaehrleistung\\Providers\\TwGewaehrleistungServiceProvider",
+    "dataProviders": [
+        {
+            "key": "TwGewaehrleistung\\Containers\\GewaehrleistungScript",
+            "name": "Gewaehrleistungshinweis (Script)",
+            "description": "In den Container 'Script loader: After scripts loaded' (Ceres::Script.AfterScriptsLoaded) verknuepfen."
+        }
+    ]
+}

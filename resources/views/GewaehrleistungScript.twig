@@ -57,17 +57,8 @@
     if (single) {
       var btn = single.querySelector(".add-to-basket-container");
       if (btn && !single.querySelector(".tw-gl-pdp-link")) {
-        var a = mk("a", { href: "#tw-gl-sec", "class": "tw-gl-link tw-gl-pdp-link" }, "✓ " + TXT);
+        var a = mk("a", { href: "#tw-gl-ov", "class": "tw-gl-link tw-gl-pdp-link tw-gl-open" }, "✓ " + TXT);
         btn.parentNode.insertBefore(a, btn.nextSibling);
-      }
-      var tc = single.querySelector(".tab-content");
-      if (tc && !document.getElementById("tw-gl-sec")) {
-        var host = tc.parentNode;
-        var sec = mk("section", { id: "tw-gl-sec", "class": "tw-gl-sec" });
-        sec.appendChild(mk("h2", {}, "Gesetzliche Gewährleistung"));
-        sec.appendChild(mk("img", { src: IMG, alt: ALT, loading: "lazy" }));
-        sec.appendChild(euLine());
-        host.parentNode.insertBefore(sec, host.nextSibling);
       }
     }
     var foot = document.querySelector("a.footlink2[href='/legal-disclosure']");

@@ -1,0 +1,116 @@
+{% autoescape false %}{% verbatim %}
+<script>
+(function () {
+  if (window.twGlInit) return;
+  window.twGlInit = true;
+  var IMG = "https://cdn03.plentyone.com/xf39i60uvfyx/frontend/gewaehrleistung/eu-gewaehrleistungshinweis-de.jpg";
+  var EU = "https://europa.eu/youreurope/garantien";
+  var ALT = "Amtliche EU-Mitteilung: Gesetzliche Gewährleistung. Mindestens zwei Jahre gesetzliche Gewährleistung der Vertragsmäßigkeit für Waren, die in der Europäischen Union verkauft werden.";
+  var TXT = "Ihre gesetzlichen Gewährleistungsrechte";
+
+  var css = ".tw-gl-ov{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,.6);z-index:10050;display:none;justify-content:center;align-items:flex-start;overflow:auto;padding:24px 12px}" +
+    ".tw-gl-ov.open{display:flex}" +
+    ".tw-gl-box{background:#fff;max-width:640px;width:100%;border-radius:6px;padding:40px 16px 16px;position:relative}" +
+    ".tw-gl-box img,.tw-gl-sec img{width:100%;height:auto;display:block}" +
+    ".tw-gl-x{position:absolute;top:4px;right:10px;border:0;background:none;font-size:32px;line-height:1;cursor:pointer;color:#333}" +
+    ".tw-gl-link{display:inline-block;margin-top:10px;font-size:.9rem;color:#003399;text-decoration:underline;cursor:pointer}" +
+    ".tw-gl-sec{margin:32px 0;padding-top:24px;border-top:1px solid #e5e5e5;max-width:600px}" +
+    ".tw-gl-sec h2{font-size:1.25rem;margin-bottom:12px}" +
+    ".tw-gl-co{margin:0 0 14px;text-align:center}" +
+    ".tw-gl-co img{max-width:150px;margin:8px auto 0;border:1px solid #ddd;cursor:pointer;display:block}" +
+    ".tw-gl-eu{font-size:.85rem;margin-top:8px}";
+
+  function mk(tag, attrs, text) {
+    var e = document.createElement(tag);
+    for (var k in attrs) { if (attrs.hasOwnProperty(k)) e.setAttribute(k, attrs[k]); }
+    if (text) e.appendChild(document.createTextNode(text));
+    return e;
+  }
+  function euLine() {
+    var p = mk("p", { "class": "tw-gl-eu" }, "Weitere Informationen: ");
+    p.appendChild(mk("a", { href: EU, target: "_blank", rel: "noopener" }, "europa.eu/youreurope/garantien"));
+    return p;
+  }
+  function openOv(e) { if (e) e.preventDefault(); var o = document.getElementById("tw-gl-ov"); if (o) o.classList.add("open"); }
+  function closeOv() { var o = document.getElementById("tw-gl-ov"); if (o) o.classList.remove("open"); }
+
+  function setup() {
+    if (!document.getElementById("tw-gl-css")) {
+      var st = mk("style", { id: "tw-gl-css" });
+      st.appendChild(document.createTextNode(css));
+      document.head.appendChild(st);
+    }
+    if (!document.getElementById("tw-gl-ov")) {
+      var ov = mk("div", { id: "tw-gl-ov", "class": "tw-gl-ov", role: "dialog", "aria-modal": "true", "aria-label": "Gesetzliche Gewährleistung" });
+      var box = mk("div", { "class": "tw-gl-box" });
+      box.appendChild(mk("button", { type: "button", "class": "tw-gl-x", "aria-label": "Schließen" }, "×"));
+      box.appendChild(mk("img", { src: IMG, alt: ALT, loading: "lazy" }));
+      box.appendChild(euLine());
+      ov.appendChild(box);
+      document.body.appendChild(ov);
+    }
+  }
+
+  function place() {
+    setup();
+    var single = document.querySelector(".single");
+    if (single) {
+      var btn = single.querySelector(".add-to-basket-container");
+      if (btn && !single.querySelector(".tw-gl-pdp-link")) {
+        var a = mk("a", { href: "#tw-gl-sec", "class": "tw-gl-link tw-gl-pdp-link" }, "✓ " + TXT);
+        btn.parentNode.insertBefore(a, btn.nextSibling);
+      }
+      var tc = single.querySelector(".tab-content");
+      if (tc && !document.getElementById("tw-gl-sec")) {
+        var host = tc.parentNode;
+        var sec = mk("section", { id: "tw-gl-sec", "class": "tw-gl-sec" });
+        sec.appendChild(mk("h2", {}, "Gesetzliche Gewährleistung"));
+        sec.appendChild(mk("img", { src: IMG, alt: ALT, loading: "lazy" }));
+        sec.appendChild(euLine());
+        host.parentNode.insertBefore(sec, host.nextSibling);
+      }
+    }
+    var foot = document.querySelector("a.footlink2[href='/legal-disclosure']");
+    if (foot && !document.querySelector(".tw-gl-foot")) {
+      var sep = mk("span", { style: "padding:0 10px; color:#a3b1b3" }, "|");
+      var fl = mk("a", { href: "#tw-gl-ov", "class": "footlink2 tw-gl-open tw-gl-foot" }, "Gesetzliche Gewährleistung");
+      foot.parentNode.insertBefore(fl, foot.nextSibling);
+      foot.parentNode.insertBefore(sep, fl);
+      foot.parentNode.insertBefore(document.createTextNode(" "), fl);
+    }
+    var isCheckout = (window.App && App.isCheckoutView) || /page-checkout/.test(document.body.className);
+    if (isCheckout && !document.querySelector(".tw-gl-co") && !document.querySelector("a[href='#guarantee-notice-modal']")) {
+      var buttons = document.querySelectorAll("#page-body button.btn-appearance");
+      for (var i = 0; i !== buttons.length; i++) {
+        var b = buttons[i];
+        if (/kaufen|bestellen/i.test(b.textContent)) {
+          var wrap = b.parentNode;
+          var co = mk("div", { "class": "tw-gl-co" });
+          co.appendChild(mk("a", { href: "#tw-gl-ov", "class": "tw-gl-link tw-gl-open" }, TXT));
+          co.appendChild(mk("img", { src: IMG, alt: ALT, "class": "tw-gl-open", loading: "lazy" }));
+          wrap.parentNode.insertBefore(co, wrap);
+          break;
+        }
+      }
+    }
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.closest && t.closest(".tw-gl-open")) { openOv(e); return; }
+    if (t.closest && t.closest("a[href='#guarantee-notice-modal']") && !document.getElementById("guarantee-notice-modal")) { openOv(e); return; }
+    if (t.id === "tw-gl-ov" || (t.classList && t.classList.contains("tw-gl-x"))) closeOv();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeOv(); });
+
+  var queued = false;
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    setTimeout(function () { queued = false; try { place(); } catch (err) {} }, 300);
+  }
+  schedule();
+  if (window.MutationObserver) new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+{% endverbatim %}{% endautoescape %}

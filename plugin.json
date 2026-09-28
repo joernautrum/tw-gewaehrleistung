@@ -2,7 +2,7 @@
     "name": "TwGewaehrleistung",
     "namespace": "TwGewaehrleistung",
     "type": "template",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Harmonisierter EU-Gewaehrleistungshinweis (DVO 2025/1960) fuer den Telliswelt-Shop: Link + Hinweis auf der Artikelseite, Link in der Kasse, Footer-Link, Hinweis-Overlay.",
     "author": "Telliswelt",
     "keywords": [
